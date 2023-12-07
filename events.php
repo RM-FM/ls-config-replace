@@ -40,15 +40,15 @@ return function (\App\CallableEventDispatcher $dispatcher)
 				
 				// Replace find pattern logic.
 				if ($replace_liq) {
-					$replace_str = "\n# START LS-REPLACE: $dir_basename\n$replace_liq\n# END LS-REPLACE: $dir_basename\n";
+					$replace_str = "\n\n# START REPLACE: $dir_basename\n$replace_liq\n# END REPLACE: $dir_basename\n\n";
 				}
 				// Inject before find pattern logic.
 				elseif ($injectbefore_liq) {
-					$replace_str = "\n# START LS-INJECT-BEFORE: $dir_basename\n$injectbefore_liq\n# END LS-INJECT-BEFORE: $dir_basename\n\n$find_str\n";
+					$replace_str = "\n\n# START INJECT-BEFORE: $dir_basename\n$injectbefore_liq\n# END INJECT-BEFORE: $dir_basename\n\n$find_str";
 				}
 				// Inject after find pattern logic.
 				elseif ($injectafter_liq) {
-					$replace_str = "$find_str\n\n# START LS-INJECT-AFTER: $dir_basename\n$injectafter_liq\n# END LS-INJECT-AFTER: $dir_basename\n\n";
+					$replace_str = "$find_str\n\n# START INJECT-AFTER: $dir_basename\n$injectafter_liq\n# END INJECT-AFTER: $dir_basename\n\n";
 				}
 				// Shouldn't happen. Make sure nothing unexpected can happen.
 				else {
@@ -63,7 +63,10 @@ return function (\App\CallableEventDispatcher $dispatcher)
 			
 		}
 		
-		$liq_config = "# THIS SCRIPT WAS CHANGED BY LS-REPLACE PLUGIN\n$header_comments\n$liq_config";
+		// Add header comments
+		$liq_config = "# THIS SCRIPT WAS CHANGED BY LS-CONFIG-REPLACE PLUGIN\n$header_comments\n$liq_config";
+		// Beautify new config code
+		$liq_config = preg_replace("/\n{2,}/", "\n\n", $liq_config);
 		
 		// Set and return configLines property.
 		$config_array = explode("\n", $liq_config);
