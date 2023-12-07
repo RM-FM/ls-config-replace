@@ -1,2 +1,2 @@
 # AzuraCastPlugin-LSConfigReplace
-This plugin allows the customization of configuration lines that normally can't be changed.
+This plugin allows the customization of Liquidsoap configuration lines in Azuracast that normally can't be changed.
